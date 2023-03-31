@@ -1,0 +1,46 @@
+#Командная строка:
+#импорт образа  
+
+docker pull postgres
+
+#создание тома для хранения БД и возможности при удалении контейнеров и пересборке образа сохранить данные
+
+docker volume create postgres
+
+#запуск контейнера на основе образа с монтированием тома данных и передачей параметров для подключения к БД
+
+docker run -v postrges:/var/lib/postgresql/data -d --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:latest
+
+#запуск терминала внутри контейнера
+
+docker exec -it postgres /bin/bash
+
+#Командная строка или Docker Desktop в контейнере postgres (Вкладка Terminal):
+
+su -l postgres
+
+#выполнение скриптов
+
+psql
+CREATE DATABASE docker;
+CREATE USER docker;
+GRANT ALL PRIVILEGES ON DATABASE docker TO docker;
+CREATE TABLE test (id integer, name varchar(10));
+SELECT * FROM test;
+exit;
+
+#Если в bash, то
+exit;
+
+#В командной строке:
+docker stop postgres
+docker rm postgres
+docker ps
+#После удаления контейнера БД не удалена
+#С одним томом могут работать несколько контейнеров
+
+
+
+
+
+
